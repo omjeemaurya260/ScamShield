@@ -493,7 +493,7 @@ export default function CallAnalyzer() {
               <p className="text-red-400/80 text-sm mt-0.5">{error}</p>
               <p className="text-slate-500 text-xs mt-1">
                 Make sure the ScamShield backend is running on{' '}
-                <span className="text-slate-400 font-mono">localhost:8000</span>.
+                <span className="text-slate-400 font-mono">the ScamShield server</span>.
               </p>
             </div>
           </div>

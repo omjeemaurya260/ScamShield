@@ -9,7 +9,8 @@ import type {
   RiskScoresData,
 } from '../types';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Use same-origin requests in production; Vite's local proxy handles /api in development.
+const BASE_URL = import.meta.env.VITE_API_URL || '';
 
 export const api = axios.create({
   baseURL: BASE_URL,

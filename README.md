@@ -117,3 +117,50 @@ The ScamShield dashboard features real-time threat intelligence derived directly
 | `POST` | `/api/alerts/send` | Consent-based family protection alert |
 
 FastAPI Interactive Documentation: **http://127.0.0.1:8000/docs**
+
+## Production deployment (Render)
+
+ScamShield can run as one Render web service. The Docker image builds the React
+frontend and serves its `dist` files from FastAPI, so the browser and API share
+the same origin.
+
+1. Create a new Render Blueprint from this repository, or create a Web Service
+   using the included `Dockerfile` and `render.yaml`.
+2. Set `MONGODB_URL` to a managed MongoDB connection string and add any AI or
+   notification credentials required by the features you enable. Use Render
+   secret environment variables; never commit them.
+3. Keep `DEBUG=false` and leave `PORT` unset so Render can provide it. The
+   service listens on `0.0.0.0` and uses Render's port automatically.
+4. The Render health check is `/api/health`. After deployment, open the service
+   URL; React deep links such as `/dashboard` are served with the SPA fallback.
+   Unknown `/api/...` paths remain JSON 404 responses.
+
+### Production validation
+
+From the repository root, build the frontend and run the production server:
+
+```bash
+cd frontend
+npm ci
+npm run build
+cd ..
+python -m pip install -r backend/requirements.txt
+cd backend
+HOST=0.0.0.0 PORT=8000 python -m uvicorn app.main:app
+```
+
+In another terminal, check `http://localhost:8000/`, a frontend deep link,
+`http://localhost:8000/api/health`, and an unknown API URL. Windows PowerShell
+equivalents for the environment variables are:
+
+```powershell
+$env:HOST="0.0.0.0"; $env:PORT="8000"
+python -m uvicorn app.main:app
+```
+
+To build the production image locally:
+
+```bash
+docker build -t scamshield:production .
+docker run --rm -p 8000:8000 -e SECRET_KEY=local-only-development-secret scamshield:production
+```
