@@ -1,0 +1,24 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Runtime data
+backend/data/
+backend/uploads/
+
+# Frontend dependencies and build output
+frontend/node_modules/
+frontend/dist/
+
+# Local tooling
+.vscode/
+.idea/
+*.log
