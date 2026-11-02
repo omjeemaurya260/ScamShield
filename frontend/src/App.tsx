@@ -25,7 +25,7 @@ function NotFound() {
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <div className="min-h-screen bg-[#0a0f1e] text-slate-100">
         <Routes>
           {/* Landing page without navbar */}

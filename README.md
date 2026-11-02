@@ -164,3 +164,29 @@ To build the production image locally:
 docker build -t scamshield:production .
 docker run --rm -p 8000:8000 -e SECRET_KEY=local-only-development-secret scamshield:production
 ```
+
+## GitHub Pages frontend deployment
+
+GitHub Pages hosts only static files and cannot run the FastAPI backend. This
+repository includes `.github/workflows/deploy-pages.yml`, which builds the
+React app and deploys `frontend/dist` to:
+
+```text
+https://omjeemaurya260.github.io/ScamShield/
+```
+
+The workflow also creates `404.html` from the React entrypoint so refreshing
+frontend routes continues to work. It builds with `/ScamShield/` as the Vite
+base path; do not publish the repository root or `README.md` directly.
+
+Before deploying, create a repository variable named `VITE_API_URL` containing
+the public URL of the separately deployed FastAPI service, for example:
+
+```text
+https://your-scamshield-api.onrender.com
+```
+
+The variable must not include a trailing slash. If it is omitted, the static
+site still loads, but API actions cannot reach the backend. After pushing to
+`master`, set the repository's Pages source to **GitHub Actions** and wait for
+the `Deploy ScamShield frontend to GitHub Pages` workflow to finish.
